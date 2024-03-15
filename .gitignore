@@ -11,5 +11,5 @@ terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/meta.yaml
 terraform/variables.tf
-terraform/default.tf
-*/.gitignore
+*terraform/default.tf
+*/.gitignore*
