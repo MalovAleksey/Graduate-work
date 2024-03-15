@@ -1,0 +1,13 @@
+*.yaml
+var.*
+variables.tf
+terraform/.terraform*
+terraform/.terraform.lock.hcl
+terraform/.terraform/providers/registry.terraform.io/yandex-cloud/yandex/0.111.0/linux_amd64/CHANGELOG.md
+terraform/.terraform/providers/registry.terraform.io/yandex-cloud/yandex/0.111.0/linux_amd64/LICENSE
+terraform/.terraform/providers/registry.terraform.io/yandex-cloud/yandex/0.111.0/linux_amd64/README.md
+terraform/.terraform/providers/registry.terraform.io/yandex-cloud/yandex/0.111.0/linux_amd64/terraform-provider-yandex_v0.111.0
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/meta.yaml
+terraform/variables.tf
