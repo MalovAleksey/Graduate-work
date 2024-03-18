@@ -3,7 +3,7 @@
 resource "yandex_compute_disk" "boot-disk" {
   name     = "sda"
   type     = "network-hdd"
-  zone     = var.zona
+  zone     = var.zona-1
   size     = "15"
   image_id = "fd88r89var8ukrlbmaki"
 } 
@@ -11,7 +11,7 @@ resource "yandex_compute_disk" "boot-disk" {
 resource "yandex_compute_disk" "boot-disk-1" {
   name     = "sda-1"
   type     = "network-hdd"
-  zone     = var.zona
+  zone     = var.zona-1
   size     = "15"
   image_id = "fd88r89var8ukrlbmaki"
 } 
@@ -22,7 +22,7 @@ resource "yandex_compute_instance" "vm-1" {
   name                      = "linux-vm-1"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
-  zone                      = var.zona
+  zone                      = var.zona-1
 
  resources {
 
@@ -58,7 +58,7 @@ resource "yandex_compute_instance" "vm-2" {
   name                      = "linux-vm-2"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
-  zone                      = var.zona
+  zone                      = var.zona-1
 
  resources {
 
@@ -98,7 +98,8 @@ resource "yandex_vpc_network" "network-1" {
 
  resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
-  zone           = var.zona
+  zone           = var.zona-1
   v4_cidr_blocks = ["192.168.10.0/24"]
   network_id = "${yandex_vpc_network.network-1.id}"
 }
+
