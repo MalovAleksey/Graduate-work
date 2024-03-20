@@ -32,6 +32,13 @@ resource "yandex_compute_disk" "boot-disk-3" {
   image_id = "fd88r89var8ukrlbmaki"
 } 
 
+resource "yandex_compute_disk" "boot-disk-4" {
+  name     = "sda-4"
+  type     = "network-hdd"
+  zone     = var.zona-3
+  size     = "15"
+  image_id = "fd88r89var8ukrlbmaki"
+} 
 #####################################################################
 
 resource "yandex_compute_instance" "nginx-1" {
@@ -160,6 +167,41 @@ resource "yandex_compute_instance" "Elasticsearch" {
 
   boot_disk {
     disk_id = yandex_compute_disk.boot-disk-3.id
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
+    nat       = true
+  }
+
+  metadata = {
+    #ssh-keys = ""
+  user-data = file(var.yaml)
+  }
+
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+############################################################################################
+
+resource "yandex_compute_instance" "Kibana" {
+    name                      = "linux-vm-5"
+  allow_stopping_for_update = true
+  platform_id               = "standard-v2"
+  zone                      = var.zona-3
+  
+
+ resources {
+
+    core_fraction = 5
+    cores  = 2
+    memory = 2
+  }
+
+  boot_disk {
+    disk_id = yandex_compute_disk.boot-disk-4.id
   }
 
   network_interface {
