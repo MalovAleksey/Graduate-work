@@ -358,3 +358,42 @@ resource "yandex_alb_virtual_host" "my-virtual-host" {
     }
   }
 }    
+
+#################################################################################################
+
+resource "yandex_alb_load_balancer" "test-balancer" {
+  name        = "my-load-balancer"
+
+  network_id  = yandex_vpc_network.network-1.id
+  
+  allocation_policy {
+    location {
+      zone_id   = var.zona-3
+      subnet_id = yandex_vpc_subnet.subnet-3.id
+    }
+  }
+  
+  listener {
+    name = "my-listener"
+    endpoint {
+      address {
+        external_ipv4_address {
+          
+        }
+      }
+      ports = [ 80 ]
+    }    
+    http {
+      handler {
+        http_router_id = yandex_alb_http_router.tf-router.id
+      }
+    }
+  }
+  
+  log_options {
+    discard_rule {
+      #http_code_intervals = "ALL"
+      discard_percent = 75
+    }
+  }
+}
