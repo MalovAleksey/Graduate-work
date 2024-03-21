@@ -307,3 +307,30 @@ ingress {
     v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
   }
 }
+
+###########################################################################################
+
+resource "yandex_alb_backend_group" "test-backend-group" {
+  name      = "my-backend-group"
+
+  http_backend {
+    name = "test-http-backend"
+    weight = 1
+    port = 80
+    target_group_ids = ["${yandex_alb_target_group.foo.id}"]
+    tls {
+      sni = "backend-domain.internal"
+    }
+    load_balancing_config {
+      panic_threshold = 50
+    }    
+    healthcheck {
+      timeout = "1s"
+      interval = "1s"
+      http_healthcheck {
+        path  = "/"
+      }
+    }
+    http2 = "true"
+  }
+}
