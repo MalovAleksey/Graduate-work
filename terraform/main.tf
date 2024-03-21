@@ -46,7 +46,7 @@ resource "yandex_compute_instance" "nginx-1" {
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-1
-  #user_data                 = file(var.skript_enginx)
+  
 
  resources {
 
@@ -72,6 +72,8 @@ resource "yandex_compute_instance" "nginx-1" {
   scheduling_policy {
     preemptible = true
   }
+
+  
 }
 
 
@@ -264,3 +266,44 @@ resource "yandex_alb_target_group" "foo" {
 }
 
 #######################################################################################################
+
+
+resource "yandex_vpc_security_group" "group1" {
+  name        = "My security group"
+  description = "description for my security group"
+  network_id  = "${yandex_vpc_network.network-1.id}"
+
+  labels = {
+    my-label = "my-label-value"
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "rule1 description"
+    port           = 80
+    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+  }
+
+ingress {
+    protocol       = "TCP"
+    description    = "rule1 description"
+    port           = 443
+    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+  }
+
+  egress {
+    protocol       = "ANY"
+    description    = "rule2 description"
+    from_port      = 0
+    to_port        = 1000
+    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+  }
+
+  egress {
+    protocol       = "UDP"
+    description    = "rule3 description"
+    from_port      = 0
+    to_port        = 1000
+    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+  }
+}
