@@ -52,3 +52,6 @@ output "subnet_id_zabbix"{
     value = yandex_vpc_subnet.subnet-3.id
 }
 
+output "nginx-1-fqdn"{
+    value = yandex_compute_instance.nginx-1.fqdn
+}

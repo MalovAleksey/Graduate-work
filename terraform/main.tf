@@ -62,6 +62,8 @@ resource "yandex_compute_instance" "nginx-1" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-1.id}"
     nat       = true
+    security_group_ids = [yandex_vpc_security_group.group1.id]
+
   }
 
   metadata = {
@@ -101,6 +103,7 @@ resource "yandex_compute_instance" "nginx-2" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
     nat       = true
+    security_group_ids = [yandex_vpc_security_group.group1.id]
   }
 
   metadata = {
@@ -138,7 +141,7 @@ resource "yandex_compute_instance" "zabbix" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
-    nat       = true
+    nat       = var.nat
   }
 
   metadata = {
@@ -208,7 +211,7 @@ resource "yandex_compute_instance" "Kibana" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
-    nat       = true
+    nat       = var.nat
   }
 
   metadata = {
@@ -248,6 +251,21 @@ resource "yandex_vpc_subnet" "subnet-3" {
   network_id = "${yandex_vpc_network.network-1.id}"
 }
 
+/*
+resource "yandex_vpc_gateway" "nat_gateway" {
+  name = "test-gateway"
+  shared_egress_gateway {}
+}
+
+resource "yandex_vpc_route_table" "rt" {
+  name       = "test-route-table"
+  network_id = "${yandex_vpc_network.network-1.id}"
+}
+  static_route {
+    destination_prefix = "0.0.0.0/0"
+    gateway_id         = yandex_vpc_gateway.nat_gateway.id
+  }
+*/
 #######################################################################################################
 
 resource "yandex_alb_target_group" "foo" {
@@ -291,11 +309,18 @@ ingress {
     v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
   }
 
+  ingress {
+    protocol       = "TCP"
+    description    = "rule1 description"
+    port           = 22
+    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+  }
+
   egress {
     protocol       = "ANY"
     description    = "rule2 description"
     from_port      = 0
-    to_port        = 1000
+    to_port        = 65535
     v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
   }
 
@@ -303,7 +328,7 @@ ingress {
     protocol       = "UDP"
     description    = "rule3 description"
     from_port      = 0
-    to_port        = 1000
+    to_port        = 65535
     v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
   }
 }
