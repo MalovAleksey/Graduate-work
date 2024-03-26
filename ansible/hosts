@@ -1,12 +1,12 @@
 
-[all_servers]
+[all]
 
 158.160.151.144  
-58.160.157.15    
-58.160.111.48   
+158.160.157.15    
+158.160.111.48   
 158.160.69.90    
 158.160.155.26   
 
-[all_servers:vars]
+[all:vars]
 ansible_ssh_user=tandem
 ansible_ssh_privete_key_file=/home/tandem/.ssh/id_rsa.pub
