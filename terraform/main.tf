@@ -142,6 +142,7 @@ resource "yandex_compute_instance" "zabbix" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = var.nat
+    security_group_ids = [yandex_vpc_security_group.group1.id]
   }
 
   metadata = {
@@ -177,6 +178,7 @@ resource "yandex_compute_instance" "Elasticsearch" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = true
+    security_group_ids = [yandex_vpc_security_group.group1.id]
   }
 
   metadata = {
@@ -212,6 +214,7 @@ resource "yandex_compute_instance" "Kibana" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = var.nat
+    security_group_ids = [yandex_vpc_security_group.group1.id]
   }
 
   metadata = {
@@ -299,21 +302,21 @@ resource "yandex_vpc_security_group" "group1" {
     protocol       = "TCP"
     description    = "rule1 description"
     port           = 80
-    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
-  }
-
-ingress {
-    protocol       = "TCP"
-    description    = "rule1 description"
-    port           = 443
-    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   ingress {
     protocol       = "TCP"
     description    = "rule1 description"
+    port           = 443
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+  ingress {
+    protocol       = "ANY"
+    description    = "rule1 description"
     port           = 22
-    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   egress {
@@ -321,7 +324,7 @@ ingress {
     description    = "rule2 description"
     from_port      = 0
     to_port        = 65535
-    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   egress {
@@ -329,7 +332,7 @@ ingress {
     description    = "rule3 description"
     from_port      = 0
     to_port        = 65535
-    v4_cidr_blocks = [ "192.168.10.0/24", "192.168.11.0/24" ]
+    v4_cidr_blocks = [ "0.0.0.0/0" ]
   }
 }
 
