@@ -13,3 +13,4 @@ terraform/meta.yaml
 terraform/variables.tf
 *terraform/default.tf
 */.gitignore*
+*hosts

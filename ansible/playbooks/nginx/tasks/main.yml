@@ -1,0 +1,22 @@
+---
+# tasks file for nginx
+
+  - name: nginx
+    apt:
+      name: nginx
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+  - name: start nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+  - name: "wait_for port {{ ports }} to become open on the host, don't start checking for 5 seconds"
+    wait_for:
+      port: "{{ ports }}"
+      delay: 5
+  - name: "Show current ip"
+    tags: 
+     - debug
+    debug:
+      msg: ["http://{{ ansible_facts.all_ipv4_addresses[0] }}:{{ ports }}", "http://{{ ansible_facts.os_family }}"]
