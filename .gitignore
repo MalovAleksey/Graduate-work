@@ -15,3 +15,4 @@ terraform/variables.tf
 */.gitignore*
 *hosts
 *group_vars*
+*manual*

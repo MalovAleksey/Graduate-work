@@ -1,3 +1,6 @@
 ---
 # vars file for nginx
 ports: 80
+ports1: 443
+sours_file: /home/tandem/Graduate-work/skript/index.html
+destin_file: /var/www/html

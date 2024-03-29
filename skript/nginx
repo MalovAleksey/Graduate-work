@@ -1,6 +1,0 @@
-#!/bin/bash
-sudo apt update
-sudo apt dist-upgrade
-sudo apt install nginx
-sudo systemctl start nginx.service
-sudo systemctl reload nginx.service
