@@ -1,3 +1,4 @@
 ---
 ansible_ssh_user               : tandem
 ansible_ssh_privete_key_file   : /home/tandem/.ssh/id_rsa.pub
+allow_world_readable_tmp files : true

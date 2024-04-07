@@ -1,6 +1,0 @@
----
-# handlers file for zabbix
-- name: Restarted nginx
-  service: 
-       name: zabbix
-       state: restarted
