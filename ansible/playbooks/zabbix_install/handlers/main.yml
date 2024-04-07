@@ -1,0 +1,25 @@
+---
+# handlers file for zabbix_install
+- name: Restarted zabbix-server
+  service: 
+       name: zabbix-server.service
+       state: restarted
+       enabled: yes
+
+- name: Restarted postgresql.service
+  service: 
+       name: postgresql.service
+       state: restarted
+       enabled: yes
+
+- name: Restarted zabbix-agent.service
+  service: 
+       name: zabbix-agent.service
+       state: restarted
+       enabled: yes     
+
+- name: Restarted apache2.service
+  service: 
+       name: apache2.service
+       state: restarted
+       enabled: yes

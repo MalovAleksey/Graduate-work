@@ -1,0 +1,6 @@
+--2024-04-03 13:05:28--  https://keyserver.ubuntu.com/pks/lookup%20?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367
+Распознаётся keyserver.ubuntu.com (keyserver.ubuntu.com)… 185.125.188.26, 185.125.188.27, 2620:2d:4000:1007::d43, ...
+Подключение к keyserver.ubuntu.com (keyserver.ubuntu.com)|185.125.188.26|:443... соединение установлено.
+HTTP-запрос отправлен. Ожидание ответа… 404 Not Found
+2024-04-03 13:05:28 ОШИБКА 404: Not Found.
+

@@ -1,0 +1,80 @@
+---
+# tasks file for zabbix_install
+- name: install the Zabbix repository
+  get_url:
+        url: https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-5+debian12_all.deb
+        dest: /tmp/
+        mode: '0777'
+- name: dpkg
+  apt:
+      deb: /tmp/zabbix-release_6.0-5+debian12_all.deb
+  
+- name: Install 
+  apt:
+      update_cache: yes
+      name:
+        - python3-pip
+        - postgresql
+        - postgresql-contrib
+        - zabbix-server-pgsql
+        - zabbix-frontend-php
+        - php8.2-pgsql
+        - zabbix-apache-conf
+        - zabbix-sql-scripts
+        - zabbix-agent
+  notify: [ Restarted zabbix-server, Restarted postgresql.service, Restarted zabbix-agent.service, Restarted apache2.service ]
+  
+    
+  
+- name: posgres
+  ansible.builtin.package:
+      name: python3-psycopg2
+      state: present
+
+  
+- name: Create db remote_user
+  community.postgresql.postgresql_user:
+      state: present
+      name: "{{name_role}}"
+      password: "{{password_zabbix}}"
+  become: true
+  become_user: postgres
+
+- name: Create db
+  community.postgresql.postgresql_db:
+      state: present
+      name: "{{name_DB}}"
+      owner: "{{name_role}}"
+  become: true
+  become_user: postgres
+
+- name: privs_user
+  community.postgresql.postgresql_privs:
+      type: database
+      db: "{{name_DB}}"
+      roles: "{{name_role}}"
+      privs: ALL
+  become: true
+  become_user: postgres
+
+  
+  
+- name: Zecat
+  shell: zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+  become: true
+  become_user: "{{ansible_ssh_user}}"
+
+- name: Create owner db zabbix
+  community.postgresql.postgresql_owner:
+     db: "{{name_DB}}"
+     new_owner: "{{name_role}}"
+  become: true
+  become_user: postgres
+
+- name: /etc/zabbix/zabbix_server.conf 
+  ansible.builtin.blockinfile:
+      state: present
+      dest: /etc/zabbix/zabbix_server.conf
+      content: "{{pass_db_conf}}"
+
+ 

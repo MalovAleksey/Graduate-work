@@ -1,0 +1,6 @@
+---
+# vars file for zabbix_install
+password_zabbix: 12345
+name_role: zabbix
+name_DB: zabbix
+pass_db_conf: DBPassword=12345
