@@ -16,3 +16,5 @@ terraform/variables.tf
 *hosts
 *group_vars*
 *manual*
+*hosts
+*.vscode
