@@ -1,6 +1,6 @@
-*.yaml
+
 var.*
-variables.tf
+*variables.tf
 terraform/.terraform*
 terraform/.terraform.lock.hcl
 terraform/.terraform/providers/registry.terraform.io/yandex-cloud/yandex/0.111.0/linux_amd64/CHANGELOG.md
@@ -12,7 +12,7 @@ terraform/terraform.tfstate.backup
 terraform/meta.yaml
 terraform/variables.tf
 *terraform/default.tf
-*/.gitignore*
+*.gitignore*
 *hosts
 *group_vars*
 *manual*

@@ -1,0 +1,15 @@
+---
+- name: Install nginx
+  hosts: web
+  become: yes
+  gather_facts: yes
+  roles:
+  - name: nginx
+
+
+- name: Install nginx
+  hosts: zabbix
+  become: yes
+  gather_facts: yes
+  roles:
+  - name: zabbix_install

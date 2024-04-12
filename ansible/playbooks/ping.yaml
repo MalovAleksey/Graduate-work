@@ -1,0 +1,6 @@
+- name: Test ping servers
+  hosts: elk
+  become: yes
+  tasks:
+    - name: Ping my servere
+      ping:

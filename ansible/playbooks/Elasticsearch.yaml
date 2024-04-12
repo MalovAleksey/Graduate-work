@@ -1,0 +1,52 @@
+- name: Docker_Elasticsearch
+  hosts: elk
+  become: yes
+  gather_facts: yes
+  vars:
+    
+
+  tasks:
+   
+   - name: copy config 
+     copy:
+       src: /home/tandem/Graduate-work/ansible/playbooks/kibana.config.yml
+       dest: /home/tandem/kibana.yml
+       owner: tandem
+       group: docker
+       mode: 0774
+   
+   - name: copy config 
+     copy:
+       src: /home/tandem/Graduate-work/ansible/playbooks/config.yaml
+       dest: /home/tandem/config.yml
+       owner: tandem
+       group: docker
+       mode: 0774
+
+   - name: Deploy Elasticsearch
+     community.docker.docker_container:
+        name: elasticsearch
+        image: elasticsearch:7.16.1
+        ports: 
+          - "9200:9200"
+          - "9300:9300"
+        volumes:
+          - /home/tandem/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+        env:
+          ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+          ELASTIC_USERNAME: "elastic"
+          ELASTIC_PASSWORD: "test"
+          discovery.type: single-node
+       
+        restart_policy: always
+   
+   - name: Deploy Kibana
+     community.docker.docker_container:
+        name: kibana
+        image: kibana:7.16.1
+        ports: 
+          - "5601:5601"
+        volumes:
+          - /home/tandem/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+        
+        restart_policy: always
