@@ -20,4 +20,4 @@ terraform/variables.tf
 *.vscode
 *wget-log
 *meta.yaml
-*.yml
+*default.tf
