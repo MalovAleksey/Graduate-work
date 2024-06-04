@@ -18,4 +18,6 @@ terraform/variables.tf
 *manual*
 *hosts
 *.vscode
-*/ansible/wget-log
+*wget-log
+*meta.yaml
+*.yml

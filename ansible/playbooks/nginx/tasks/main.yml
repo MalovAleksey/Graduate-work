@@ -11,7 +11,7 @@
     template:
       src: index.html.j2
       dest: "{{ destin_file }}/index.html"
-      mode: 0555
+      mode: 0755
     notify: Restarted nginx
 
 

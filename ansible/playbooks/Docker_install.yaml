@@ -1,5 +1,5 @@
 - name: Docker_install
-  hosts: elk
+  hosts: all
   become: yes
   gather_facts: yes
   vars:
@@ -51,7 +51,13 @@
        group: docker
        append: yes
 
-
+   - name: copy config 
+     copy:
+       src: /home/tandem/Graduate-work/ansible/playbooks/docker.config.yml
+       dest: /etc/docker/daemond.json
+       owner: tandem
+       group: docker
+       mode: 0744
 
   handlers:
     - name: Start and Enable docker

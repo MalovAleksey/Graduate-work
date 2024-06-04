@@ -1,0 +1,43 @@
+- name: Docker_Elasticsearch
+  hosts: web
+  become: yes
+  gather_facts: yes
+  vars:
+    
+
+  tasks:
+   
+   - name: group log.nginx
+     ansible.builtin.file:
+       path: /var/log/nginx
+       state: directory
+       recurse: yes
+       group: tandem
+       
+   - name: copy config 
+     copy:
+       src: /home/tandem/Graduate-work/ansible/playbooks/filebeat.config.yml
+       dest: /home/tandem/filebeat.yml
+       owner: tandem
+       group: docker
+       mode: 0744
+   
+   
+
+   - name: Deploy filebeat
+     community.docker.docker_container:
+        name: filebeat
+        image: elastic/filebeat:7.16.2
+        
+      
+        
+        volumes:
+          - /home/tandem/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+          - /var/lib/docker/conteiners:/var/lib/docker/conteiners:ro
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+          - /var/log/nginx/:/usr/share/filebeat/logs/:ro
+        
+        
+        restart: true
+        restart_policy: "always"
+   

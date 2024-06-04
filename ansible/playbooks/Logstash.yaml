@@ -1,0 +1,57 @@
+- name: Docker_Elasticsearch
+  hosts: elk
+  become: yes
+  gather_facts: yes
+  vars:
+    
+
+  tasks:
+   - name: Createes directory
+     ansible.builtin.file:
+        path: /home/tandem/logstash/
+        state: directory
+        mode: '0774'
+
+   - name: copy config 
+     copy:
+       src: /home/tandem/logstash/config.yml
+       dest: /home/tandem/logstash/config.yml
+       owner: tandem
+       group: docker
+       mode: 0774
+
+   - name: copy pipline 
+     copy:
+       src: /home/tandem/logstash/pipline.yaml
+       dest: /home/tandem/logstash/pipline.yaml
+       owner: tandem
+       group: docker
+       mode: 0774
+   
+   - name: copy piplines
+     copy:
+       src: /home/tandem/logstash/piplines
+       dest: /home/tandem/logstash/piplines
+       owner: tandem
+       group: docker
+       mode: 0774
+
+   - name: Deploy Logstash
+     community.docker.docker_container:
+        name: logstash
+        image: logstash:7.16.2
+        
+        ports:
+          - "5044:5044"
+          - "5001:5000"
+          - "9600:9600"
+        
+        volumes:
+          - /home/tandem/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro
+          - /home/tandem/logstash/pipline.yaml:/usr/share/logstash/config/pipelines.yml:ro
+          - /home/tandem/logstash/pipelines:/usr/share/logstash/config/pipelins:ro
+          
+        
+        
+        restart_policy: always
+   
