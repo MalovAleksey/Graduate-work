@@ -3,13 +3,14 @@
 
 [zabbix]
 
-zabbix_server ansible_host=192.168.0.65
+zabbix_server ansible_host=158.160.168.119
 
 [web]
 
-nginx_1 ansible_host=192.168.1.57
-
+nginx_1 ansible_host=178.154.229.8
+nginx_2 ansible_host=51.250.104.140
 
 [elk]
 
-Elastic ansible_host=192.168.1.60
+Elastic ansible_host=51.250.84.107
+

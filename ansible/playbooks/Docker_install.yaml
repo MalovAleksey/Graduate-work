@@ -1,5 +1,5 @@
 - name: Docker_install
-  hosts: all
+  hosts: elk
   become: yes
   gather_facts: yes
   vars:

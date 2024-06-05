@@ -1,6 +1,6 @@
 ---
 - name: Zabbix
-  hosts: all
+  hosts: zabbix
   become: yes
   gather_facts: yes
   vars:

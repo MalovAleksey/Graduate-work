@@ -5,7 +5,7 @@ resource "yandex_compute_disk" "boot-disk" {
   type     = "network-hdd"
   zone     = var.zona-1
   size     = "15"
-  image_id = "fd88r89var8ukrlbmaki"
+  image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
 
 resource "yandex_compute_disk" "boot-disk-1" {
@@ -13,7 +13,7 @@ resource "yandex_compute_disk" "boot-disk-1" {
   type     = "network-hdd"
   zone     = var.zona-2
   size     = "15"
-  image_id = "fd88r89var8ukrlbmaki"
+  image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
 
 resource "yandex_compute_disk" "boot-disk-2" {
@@ -21,7 +21,7 @@ resource "yandex_compute_disk" "boot-disk-2" {
   type     = "network-hdd"
   zone     = var.zona-3
   size     = "15"
-  image_id = "fd88r89var8ukrlbmaki"
+  image_id = "fd87q5833j757gs2omg3"
 } 
 
 resource "yandex_compute_disk" "boot-disk-3" {
@@ -29,7 +29,7 @@ resource "yandex_compute_disk" "boot-disk-3" {
   type     = "network-hdd"
   zone     = var.zona-3
   size     = "15"
-  image_id = "fd88r89var8ukrlbmaki"
+  image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
 
 resource "yandex_compute_disk" "boot-disk-4" {
@@ -37,7 +37,7 @@ resource "yandex_compute_disk" "boot-disk-4" {
   type     = "network-hdd"
   zone     = var.zona-3
   size     = "15"
-  image_id = "fd88r89var8ukrlbmaki"
+  image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
 #####################################################################
 
@@ -83,11 +83,11 @@ resource "yandex_compute_instance" "nginx-1" {
 
  
 resource "yandex_compute_instance" "nginx-2" {
-    name                      = "linux-vm-2"
+  name                      = "linux-vm-2"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-2
-  #user_data                 = file(var.skript_enginx)
+  
 
  resources {
 
@@ -316,6 +316,20 @@ resource "yandex_vpc_security_group" "group1" {
     protocol       = "ANY"
     description    = "rule1 description"
     port           = 22
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ingress {
+    protocol       = "ANY"
+    description    = "rule1 description"
+    port           = 9200
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+  ingress {
+    protocol       = "ANY"
+    description    = "rule1 description"
+    port           = 5601
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 

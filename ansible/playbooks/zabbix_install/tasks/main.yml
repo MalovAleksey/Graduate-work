@@ -22,6 +22,7 @@
         - zabbix-apache-conf
         - zabbix-sql-scripts
         - zabbix-agent
+        - acl
   notify: [ Restarted zabbix-server, Restarted postgresql.service, Restarted zabbix-agent.service, Restarted apache2.service ]
   
     
@@ -57,8 +58,7 @@
   become: true
   become_user: postgres
 
-  
-  
+    
 - name: Zecat
   shell: zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
   become: true
