@@ -39,6 +39,33 @@ resource "yandex_compute_disk" "boot-disk-4" {
   size     = "15"
   image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
+
+#################################################################################
+
+resource "yandex_compute_snapshot" "snapshot_boot-disk" {
+  name = "sda"
+  source_disk_id = yandex_compute_disk.boot-disk.id
+  
+  #timeouts {
+  #  delete = "168h"
+ # } 
+  
+}
+
+resource "yandex_compute_snapshot_schedule" "default" {
+  name = "snapshot"
+
+  schedule_policy {
+    expression =  "0 0 ? * *" 
+  }
+
+  snapshot_count = 2
+
+  
+  disk_ids = [ yandex_compute_disk.boot-disk.id, yandex_compute_disk.boot-disk-1.id, yandex_compute_disk.boot-disk-2.id, yandex_compute_disk.boot-disk-3.id, yandex_compute_disk.boot-disk-4.id ]
+}
+
+
 #####################################################################
 
 resource "yandex_compute_instance" "nginx-1" {
@@ -74,10 +101,7 @@ resource "yandex_compute_instance" "nginx-1" {
   scheduling_policy {
     preemptible = true
   }
-
-  
 }
-
 
 ###########################################################################
 
@@ -115,9 +139,6 @@ resource "yandex_compute_instance" "nginx-2" {
     preemptible = true
   }
 }
-
- 
-
 
 ############################################################################################
 
@@ -254,21 +275,6 @@ resource "yandex_vpc_subnet" "subnet-3" {
   network_id = "${yandex_vpc_network.network-1.id}"
 }
 
-/*
-resource "yandex_vpc_gateway" "nat_gateway" {
-  name = "test-gateway"
-  shared_egress_gateway {}
-}
-
-resource "yandex_vpc_route_table" "rt" {
-  name       = "test-route-table"
-  network_id = "${yandex_vpc_network.network-1.id}"
-}
-  static_route {
-    destination_prefix = "0.0.0.0/0"
-    gateway_id         = yandex_vpc_gateway.nat_gateway.id
-  }
-*/
 #######################################################################################################
 
 resource "yandex_alb_target_group" "foo" {
@@ -299,14 +305,14 @@ resource "yandex_vpc_security_group" "group1" {
   }
 
   ingress {
-    protocol       = "TCP"
+    protocol       = "ANY"
     description    = "rule1 description"
     port           = 80
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   ingress {
-    protocol       = "TCP"
+    protocol       = "ANY"
     description    = "rule1 description"
     port           = 443
     v4_cidr_blocks = [  "0.0.0.0/0" ]
@@ -342,7 +348,7 @@ ingress {
   }
 
   egress {
-    protocol       = "UDP"
+    protocol       = "ANY"
     description    = "rule3 description"
     from_port      = 0
     to_port        = 65535
@@ -360,20 +366,22 @@ resource "yandex_alb_backend_group" "test-backend-group" {
     weight = 1
     port = 80
     target_group_ids = ["${yandex_alb_target_group.foo.id}"]
-    tls {
-      sni = "backend-domain.internal"
-    }
+    #tls {
+     # sni = "backend-domain.internal"
+   # }
     load_balancing_config {
-      panic_threshold = 50
+      panic_threshold = 80
     }    
     healthcheck {
-      timeout = "1s"
-      interval = "1s"
+      timeout = "10s"
+      interval = "2s"
+      healthy_threshold = 10
+      unhealthy_threshold = 15
       http_healthcheck {
         path  = "/"
       }
     }
-    http2 = "true"
+    http2 = "false"
   }
 }
 
@@ -383,7 +391,8 @@ resource "yandex_alb_http_router" "tf-router" {
   name          = "tf-router"
   labels        = {
     tf-label    = "tf-label-value"
-    empty-label = ""
+    empty-label = "s"
+    
   }
 }
 
@@ -395,7 +404,7 @@ resource "yandex_alb_virtual_host" "my-virtual-host" {
     http_route {
       http_route_action {
         backend_group_id  = yandex_alb_backend_group.test-backend-group.id
-        timeout           = "60s"
+        timeout           = "30s"
       }
     }
   }
@@ -405,13 +414,13 @@ resource "yandex_alb_virtual_host" "my-virtual-host" {
 
 resource "yandex_alb_load_balancer" "test-balancer" {
   name        = "my-load-balancer"
-
   network_id  = yandex_vpc_network.network-1.id
+  
   
   allocation_policy {
     location {
-      zone_id   = var.zona-3
-      subnet_id = yandex_vpc_subnet.subnet-3.id
+      zone_id   =  var.zona-3
+      subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     }
   }
   
@@ -434,8 +443,9 @@ resource "yandex_alb_load_balancer" "test-balancer" {
   
   log_options {
     discard_rule {
-      #http_code_intervals = "ALL"
+      
       discard_percent = 75
     }
   }
 }
+

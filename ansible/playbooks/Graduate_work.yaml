@@ -7,9 +7,9 @@
   - name: nginx
 
 
-- name: Install nginx
-  hosts: zabbix
-  become: yes
-  gather_facts: yes
-  roles:
-  - name: zabbix_install
+#- name: Install nginx
+ # hosts: zabbix
+ # become: yes
+ # gather_facts: yes
+ # roles:
+ # - name: zabbix_install

@@ -40,6 +40,7 @@ output "ip_adress_Kibana"{
 }
 ###########################################################################################
 
+/*
 output "subnet_id_nginx-1"{
     value = yandex_vpc_subnet.subnet-1.id
 }
@@ -55,3 +56,9 @@ output "subnet_id_zabbix"{
 output "nginx-1-fqdn"{
     value = yandex_compute_instance.nginx-1.fqdn
 }
+*/
+
+
+output "IP_ADDRESS_LOAD_BALANCER"{
+    value = yandex_alb_load_balancer.test-balancer.listener[0].endpoint[0].address[0].external_ipv4_address[0].address
+   }   
