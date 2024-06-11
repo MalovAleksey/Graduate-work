@@ -18,8 +18,7 @@
           - software-properties-common
          update_cache: yes
    
-  # - name: shell
-   #  shell: 'sudo install -m 0755 -d /etc/apt/keyrings && sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && sudo chmod a+r /etc/apt/keyrings/docker.asc'
+  
    
    - name: add apt-key
      apt_key:

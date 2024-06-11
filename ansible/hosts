@@ -1,16 +1,18 @@
 
-[all]
+[all:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh  -q tandem@158.160.175.87 -W %h:%p"'
+
 
 [zabbix]
 
-zabbix_server ansible_host=158.160.149.229
+zabbix_server ansible_host=192.168.12.25
 
 [web]
 
-nginx_1 ansible_host=178.154.230.73
-nginx_2 ansible_host=84.201.167.110
+nginx_1 ansible_host=192.168.10.7
+nginx_2 ansible_host=192.168.11.15
 
 [elk]
 
-Elastic ansible_host=51.250.84.107
-
+elastic ansible_host=192.168.12.28
+kibana ansible_host=192.168.12.15
