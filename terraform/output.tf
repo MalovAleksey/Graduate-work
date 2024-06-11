@@ -1,3 +1,7 @@
+output "nat_ip_adress_bastion-host"{
+    value = yandex_compute_instance.bastion-host.network_interface.0.nat_ip_address
+}
+
 output "nat_ip_adress_nginx-1"{
     value = yandex_compute_instance.nginx-1.network_interface.0.nat_ip_address
 }
@@ -18,6 +22,11 @@ output "nat_ip_adress_Kibana"{
     value = yandex_compute_instance.Kibana.network_interface.0.nat_ip_address
 }
 #########################################################################################
+
+output "ip_adress_bastion_host"{
+    value = yandex_compute_instance.bastion-host.network_interface.0.ip_address
+}
+
 
 output "ip_adress_nginx-1"{
     value = yandex_compute_instance.nginx-1.network_interface.0.ip_address

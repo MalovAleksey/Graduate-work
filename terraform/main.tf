@@ -40,23 +40,87 @@ resource "yandex_compute_disk" "boot-disk-4" {
   image_id = "fd8r4il8eoe5bkl1mhmu"
 } 
 
-#################################################################################
+resource "yandex_compute_disk" "boot-disk-5" {
+  name     = "sda-5"
+  type     = "network-hdd"
+  zone     = var.zona-3
+  size     = "15"
+  image_id = "fd8r4il8eoe5bkl1mhmu"
+} 
 
-resource "yandex_compute_snapshot" "snapshot_boot-disk" {
-  name = "sda"
-  source_disk_id = yandex_compute_disk.boot-disk.id
+##########################################################################################
+
+
+resource "yandex_vpc_security_group" "group-1" {
+  name        = "My security group-1"
+  description = "description for my security group-2"
+  network_id  = "${yandex_vpc_network.network-1.id}"
+
+
   
-  #timeouts {
-  #  delete = "168h"
- # } 
+
+  ingress {
+    protocol       = "tcp"
+    port           = 22
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
   
+
+  egress {
+    protocol       = "tcp"
+    from_port      = 0
+    to_port        = 65535
+    v4_cidr_blocks = [ "0.0.0.0/0" ]
+  }
 }
+
+############################################################################################
+
+resource "yandex_compute_instance" "bastion-host" {
+  name                      = "linux-vm-0"
+  allow_stopping_for_update = true
+  platform_id               = "standard-v2"
+  zone                      = var.zona-3
+  
+
+ resources {
+
+    core_fraction = 5
+    cores  = 2
+    memory = 2
+  }
+
+  boot_disk {
+    disk_id = yandex_compute_disk.boot-disk-5.id
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
+    nat       = true
+    security_group_ids = [yandex_vpc_security_group.group-1.id]
+    ip_address = "192.168.12.254"
+
+  }
+
+  metadata = {
+    #ssh-keys = ""
+  user-data = file(var.yaml)
+  }
+
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+
+#################################################################################
 
 resource "yandex_compute_snapshot_schedule" "default" {
   name = "snapshot"
 
   schedule_policy {
-    expression =  "0 0 ? * *" 
+    expression =  "0 0 ? * *"
   }
 
   snapshot_count = 2
@@ -89,7 +153,7 @@ resource "yandex_compute_instance" "nginx-1" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-1.id}"
     nat       = true
-    security_group_ids = [yandex_vpc_security_group.group1.id]
+    security_group_ids = [yandex_vpc_security_group.web.id]
 
   }
 
@@ -127,7 +191,7 @@ resource "yandex_compute_instance" "nginx-2" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
     nat       = true
-    security_group_ids = [yandex_vpc_security_group.group1.id]
+    security_group_ids = [yandex_vpc_security_group.web.id]
   }
 
   metadata = {
@@ -163,7 +227,7 @@ resource "yandex_compute_instance" "zabbix" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = var.nat
-    security_group_ids = [yandex_vpc_security_group.group1.id]
+    security_group_ids = [yandex_vpc_security_group.zabbix.id]
   }
 
   metadata = {
@@ -199,7 +263,7 @@ resource "yandex_compute_instance" "Elasticsearch" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = true
-    security_group_ids = [yandex_vpc_security_group.group1.id]
+    security_group_ids = [yandex_vpc_security_group.elasticsearch.id]
   }
 
   metadata = {
@@ -235,7 +299,7 @@ resource "yandex_compute_instance" "Kibana" {
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
     nat       = var.nat
-    security_group_ids = [yandex_vpc_security_group.group1.id]
+    security_group_ids = [yandex_vpc_security_group.kibana.id]
   }
 
   metadata = {
@@ -295,36 +359,29 @@ resource "yandex_alb_target_group" "foo" {
 #######################################################################################################
 
 
-resource "yandex_vpc_security_group" "group1" {
-  name        = "My security group"
+resource "yandex_vpc_security_group" "web" {
+  name        = "My security group Web"
   description = "description for my security group"
   network_id  = "${yandex_vpc_network.network-1.id}"
 
-  labels = {
-    my-label = "my-label-value"
-  }
-
   ingress {
     protocol       = "ANY"
-    description    = "rule1 description"
     port           = 80
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   ingress {
     protocol       = "ANY"
-    description    = "rule1 description"
     port           = 443
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
   ingress {
-    protocol       = "ANY"
-    description    = "rule1 description"
+    protocol       = "tcp"
     port           = 22
-    v4_cidr_blocks = [  "0.0.0.0/0" ]
+    v4_cidr_blocks = [  "192.168.12.254/32" ]
   }
-
+/*
 ingress {
     protocol       = "ANY"
     description    = "rule1 description"
@@ -346,14 +403,117 @@ ingress {
     to_port        = 65535
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
-
+*/
   egress {
     protocol       = "ANY"
-    description    = "rule3 description"
     from_port      = 0
     to_port        = 65535
     v4_cidr_blocks = [ "0.0.0.0/0" ]
   }
+}
+
+##################
+
+resource "yandex_vpc_security_group" "elasticsearch" {
+  name        = "My security group Elasticsearch"
+  description = "description for my security group"
+  network_id  = "${yandex_vpc_network.network-1.id}"
+ 
+ingress {
+    protocol       = "tcp"
+    port           = 22
+    v4_cidr_blocks = [  "192.168.12.254/32" ]
+  }
+
+ingress {
+    protocol       = "tcp"
+    port           = 9200
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ingress {
+    protocol       = "tcp"
+    port           = 9300
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ 
+egress {
+    protocol       = "tcp"
+    from_port      = 0
+    to_port        = 65535
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+}
+
+###########
+
+resource "yandex_vpc_security_group" "kibana" {
+  name        = "My security group Kibana"
+  description = "description for my security group"
+  network_id  = "${yandex_vpc_network.network-1.id}"
+
+  ingress {
+    protocol       = "tcp"
+    port           = 22
+    v4_cidr_blocks = [  "192.168.12.254/32" ]
+  }
+
+ ingress {
+    protocol       = "tcp"
+    port           = 5601
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ 
+  egress {
+    protocol       = "tcp"
+    from_port      = 0
+    to_port        = 65535
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+}
+
+###########################
+
+resource "yandex_vpc_security_group" "zabbix" {
+  name        = "My security group Zabbix"
+  description = "description for my security group"
+  network_id  = "${yandex_vpc_network.network-1.id}"
+ 
+ ingress {
+    protocol       = "tcp"
+    port           = 22
+    v4_cidr_blocks = [  "192.168.12.254/32" ]
+  }
+ ingress {
+    protocol       = "ANY"
+    port           = 80
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ ingress {
+    protocol       = "ANY"
+    port           = 443
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+ ingress {
+    protocol       = "tcp"
+    from_port      = 10050
+    to_port        = 10051
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
+ 
+  egress {
+    protocol       = "tcp"
+    from_port      = 0
+    to_port        = 65535
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
 }
 
 ###########################################################################################
