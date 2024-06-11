@@ -1,0 +1,26 @@
+---
+# tasks file for Elasticsearch_install
+- name: copy config 
+  copy:
+       src: /home/tandem/Graduate-work/ansible/playbooks/config.yaml
+       dest: /home/tandem/config.yml
+       owner: tandem
+       group: docker
+       mode: 0774
+
+- name: Deploy Elasticsearch
+  community.docker.docker_container:
+        name: elasticsearch
+        image: elasticsearch:7.16.1
+        ports: 
+          - "9200:9200"
+          - "9300:9300"
+        volumes:
+          - /home/tandem/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+        env:
+          ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+          ELASTIC_USERNAME: "{{user}}"
+          ELASTIC_PASSWORD: "{{password}}"
+          discovery.type: single-node
+       
+        restart_policy: always

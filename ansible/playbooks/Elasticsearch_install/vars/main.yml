@@ -1,0 +1,4 @@
+---
+# vars file for Elasticsearch_install
+user: elastic
+password: test

@@ -1,0 +1,7 @@
+---
+# handlers file for Docker_install
+- name: Start and Enable docker
+  service: 
+       name: docker
+       state: started
+       enabled: yes
