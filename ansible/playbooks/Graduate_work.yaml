@@ -16,7 +16,7 @@
 
 
 - name: Install docker
-  hosts: elk
+  hosts: [ elk, web ]
   become: yes
   gather_facts: yes
   roles:

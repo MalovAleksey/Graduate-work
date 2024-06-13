@@ -58,11 +58,11 @@
   become: true
   become_user: postgres
 
-    
 - name: Zecat
   shell: zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
   become: true
-  become_user: "{{ansible_ssh_user}}"
+  become_user: "{{ansible_ssh_user}}"  
+
 
 - name: Create owner db zabbix
   community.postgresql.postgresql_owner:
@@ -70,6 +70,8 @@
      new_owner: "{{name_role}}"
   become: true
   become_user: postgres
+  
+
 
 - name: /etc/zabbix/zabbix_server.conf 
   ansible.builtin.blockinfile:

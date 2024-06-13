@@ -9,7 +9,7 @@
    
    - name: copy config 
      copy:
-       src: /home/tandem/Graduate-work/ansible/playbooks/kibana.config.yml
+       src: /home/tandem/Graduate-work/skript/kibana.config.yaml
        dest: /home/tandem/kibana.yml
        owner: tandem
        group: docker
@@ -17,7 +17,7 @@
    
    - name: copy config 
      copy:
-       src: /home/tandem/Graduate-work/ansible/playbooks/config.yaml
+       src: /home/tandem/Graduate-work/skript/config.yaml
        dest: /home/tandem/config.yml
        owner: tandem
        group: docker

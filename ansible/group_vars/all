@@ -2,3 +2,13 @@
 ansible_ssh_user               : tandem
 ansible_ssh_privete_key_file   : /home/tandem/.ssh/id_rsa.pub
 allow_world_readable_tmp files : true
+
+
+nginx1                        : 192.168.10.7
+nginx2                        : 192.168.11.9
+zabbix                        : 192.168.12.23
+kibana                        : 192.168.12.5
+elastic                       : 192.168.12.33
+
+bastion                       : 158.160.171.208
+kibana_nat                    : 158.160.177.3

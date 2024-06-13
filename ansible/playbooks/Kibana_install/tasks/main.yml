@@ -1,8 +1,8 @@
 ---
 # tasks file for Kibana_install
 - name: copy config 
-  copy:
-       src: /home/tandem/Graduate-work/ansible/playbooks/kibana.config.yml
+  template:
+       src: /home/tandem/Graduate-work/skript/kibana.config.j2
        dest: /home/tandem/kibana.yml
        owner: tandem
        group: docker

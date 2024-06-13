@@ -34,7 +34,7 @@ resource "yandex_compute_disk" "boot-disk-3" {
 
 resource "yandex_compute_disk" "boot-disk-4" {
   name     = "sda-4"
-  type     = "network-hdd"
+  type     = "network-ssd"
   zone     = var.zona-3
   size     = "15"
   image_id = "fd8r4il8eoe5bkl1mhmu"
@@ -152,7 +152,7 @@ resource "yandex_compute_instance" "nginx-1" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-1.id}"
-    nat       = true
+    nat       = var.nat
     security_group_ids = [yandex_vpc_security_group.web.id]
 
   }
@@ -190,7 +190,7 @@ resource "yandex_compute_instance" "nginx-2" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
-    nat       = true
+    nat       = var.nat
     security_group_ids = [yandex_vpc_security_group.web.id]
   }
 
@@ -262,7 +262,7 @@ resource "yandex_compute_instance" "Elasticsearch" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
-    nat       = true
+    nat       = var.nat
     security_group_ids = [yandex_vpc_security_group.elasticsearch.id]
   }
 

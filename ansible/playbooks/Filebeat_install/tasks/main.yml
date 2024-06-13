@@ -8,8 +8,8 @@
        group: tandem
        
 - name: copy config 
-  copy:
-       src: /home/tandem/Graduate-work/ansible/playbooks/filebeat.config.yml
+  template:
+       src: /home/tandem/Graduate-work/skript/filebeat.config.j2
        dest: /home/tandem/filebeat.yml
        owner: tandem
        group: docker
