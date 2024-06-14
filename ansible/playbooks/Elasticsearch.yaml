@@ -8,8 +8,8 @@
   tasks:
    
    - name: copy config 
-     copy:
-       src: /home/tandem/Graduate-work/skript/kibana.config.yaml
+     template:
+       src: /home/tandem/Graduate-work/skript/kibana.config.j2
        dest: /home/tandem/kibana.yml
        owner: tandem
        group: docker

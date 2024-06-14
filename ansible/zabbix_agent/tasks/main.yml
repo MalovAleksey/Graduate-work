@@ -1,0 +1,23 @@
+---
+# tasks file for zabbix_agent
+- name: install the Zabbix repository
+  get_url:
+        url: https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_7.0-1+debian11_all.deb
+        dest: /tmp/
+        mode: '0777'
+- name: dpkg
+  apt:
+      deb: /tmp/zabbix-release_7.0-1+debian11_all.deb
+  
+- name: Install 
+  apt:
+      update_cache: yes
+      name:
+        - zabbix-agent
+      state: latest
+
+- name: copy config 
+  template:
+       src: /home/tandem/Graduate-work/skript/zabbix_agent.j2
+       dest: /etc/zabbix/zabbix_agentd.conf
+  notify: Restarted zabbix-agent.service

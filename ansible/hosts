@@ -16,3 +16,7 @@ nginx_2 ansible_host="{{nginx2}}"
 
 elastic ansible_host="{{elastic}}"
 kibana ansible_host="{{kibana}}"
+
+[bastion-host]
+
+bastion ansible_host="{{bastion}}"

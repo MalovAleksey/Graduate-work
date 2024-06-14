@@ -65,10 +65,17 @@ resource "yandex_vpc_security_group" "group-1" {
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
+  ingress {
+    protocol       = "ANY"
+    from_port      = 10050
+    to_port        = 10051
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
   
 
   egress {
-    protocol       = "tcp"
+    protocol       = "ANY"
     from_port      = 0
     to_port        = 65535
     v4_cidr_blocks = [ "0.0.0.0/0" ]
@@ -381,29 +388,14 @@ resource "yandex_vpc_security_group" "web" {
     port           = 22
     v4_cidr_blocks = [  "192.168.12.254/32" ]
   }
-/*
-ingress {
-    protocol       = "ANY"
-    description    = "rule1 description"
-    port           = 9200
-    v4_cidr_blocks = [  "0.0.0.0/0" ]
-  }
 
   ingress {
     protocol       = "ANY"
-    description    = "rule1 description"
-    port           = 5601
+    from_port      = 10050
+    to_port        = 10051
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
-  egress {
-    protocol       = "ANY"
-    description    = "rule2 description"
-    from_port      = 0
-    to_port        = 65535
-    v4_cidr_blocks = [  "0.0.0.0/0" ]
-  }
-*/
   egress {
     protocol       = "ANY"
     from_port      = 0
@@ -437,9 +429,16 @@ ingress {
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
+ingress {
+    protocol       = "ANY"
+    from_port      = 10050
+    to_port        = 10051
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
+
  
 egress {
-    protocol       = "tcp"
+    protocol       = "ANY"
     from_port      = 0
     to_port        = 65535
     v4_cidr_blocks = [  "0.0.0.0/0" ]
@@ -466,9 +465,15 @@ resource "yandex_vpc_security_group" "kibana" {
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
 
+  ingress {
+    protocol       = "ANY"
+    from_port      = 10050
+    to_port        = 10051
+    v4_cidr_blocks = [  "0.0.0.0/0" ]
+  }
  
   egress {
-    protocol       = "tcp"
+    protocol       = "ANY"
     from_port      = 0
     to_port        = 65535
     v4_cidr_blocks = [  "0.0.0.0/0" ]
@@ -500,7 +505,7 @@ resource "yandex_vpc_security_group" "zabbix" {
     v4_cidr_blocks = [  "0.0.0.0/0" ]
   }
  ingress {
-    protocol       = "tcp"
+    protocol       = "ANY"
     from_port      = 10050
     to_port        = 10051
     v4_cidr_blocks = [  "0.0.0.0/0" ]
@@ -508,7 +513,7 @@ resource "yandex_vpc_security_group" "zabbix" {
 
  
   egress {
-    protocol       = "tcp"
+    protocol       = "ANY"
     from_port      = 0
     to_port        = 65535
     v4_cidr_blocks = [  "0.0.0.0/0" ]
