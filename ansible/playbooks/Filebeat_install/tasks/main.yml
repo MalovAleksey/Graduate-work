@@ -25,4 +25,4 @@
           - /var/run/docker.sock:/var/run/docker.sock:ro
           - /var/log/nginx/:/usr/share/filebeat/logs/:ro                
         restart: true
-        restart_policy: "always"
+        restart_policy: "on-failure"

@@ -86,6 +86,7 @@ resource "yandex_vpc_security_group" "group-1" {
 
 resource "yandex_compute_instance" "bastion-host" {
   name                      = "linux-vm-0"
+  hostname                  = "bastion"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-3
@@ -141,6 +142,7 @@ resource "yandex_compute_snapshot_schedule" "default" {
 
 resource "yandex_compute_instance" "nginx-1" {
   name                      = "linux-vm-1"
+  hostname                  = "nginx-1"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-1
@@ -179,6 +181,7 @@ resource "yandex_compute_instance" "nginx-1" {
  
 resource "yandex_compute_instance" "nginx-2" {
   name                      = "linux-vm-2"
+  hostname                  = "nginx-2"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-2
@@ -214,7 +217,8 @@ resource "yandex_compute_instance" "nginx-2" {
 ############################################################################################
 
 resource "yandex_compute_instance" "zabbix" {
-    name                      = "linux-vm-3"
+  name                      = "linux-vm-3"
+  hostname                  = "zabbix"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-3
@@ -250,7 +254,8 @@ resource "yandex_compute_instance" "zabbix" {
 #############################################################################################
 
 resource "yandex_compute_instance" "Elasticsearch" {
-    name                      = "linux-vm-4"
+  name                      = "linux-vm-4"
+  hostname                  = "elasticsearch"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-3
@@ -286,7 +291,8 @@ resource "yandex_compute_instance" "Elasticsearch" {
 ############################################################################################
 
 resource "yandex_compute_instance" "Kibana" {
-    name                      = "linux-vm-5"
+  name                      = "linux-vm-5"
+  hostname                  = "kibana"
   allow_stopping_for_update = true
   platform_id               = "standard-v2"
   zone                      = var.zona-3

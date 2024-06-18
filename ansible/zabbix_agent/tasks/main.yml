@@ -2,7 +2,7 @@
 # tasks file for zabbix_agent
 - name: install the Zabbix repository
   get_url:
-        url: https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_7.0-1+debian11_all.deb
+        url: http://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_7.0-1+debian11_all.deb
         dest: /tmp/
         mode: '0777'
 - name: dpkg

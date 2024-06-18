@@ -2,7 +2,7 @@
 # tasks file for zabbix_install
 - name: install the Zabbix repository
   get_url:
-        url: https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-5+debian12_all.deb
+        url: http://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-5+debian12_all.deb
         dest: /tmp/
         mode: '0777'
 - name: dpkg
