@@ -10,14 +10,12 @@
 - name: Install zabbix
   hosts: zabbix
   become: yes
-  gather_facts: yes
   roles:
   - name: zabbix_install
 
 - name: Install zabbix_agent
   hosts: [web, elk, bastion-host]
   become: yes
-  gather_facts: yes
   roles:
   - name: zabbix_agent
 
@@ -25,14 +23,12 @@
 - name: Install docker
   hosts: [ elk, web ]
   become: yes
-  gather_facts: yes
   roles:
   - name: Docker_install
 
 - name: Install Elasticksearch
   hosts: elastic
   become: yes
-  gather_facts: yes
   roles:
   - name: Elasticsearch_install
 
@@ -40,13 +36,11 @@
 - name: Install Kibana
   hosts: kibana
   become: yes
-  gather_facts: yes
   roles:
   - name: Kibana_install
 
 - name: Install Filebeat
   hosts: web
   become: yes
-  gather_facts: yes
   roles:
   - name: Filebeat_install

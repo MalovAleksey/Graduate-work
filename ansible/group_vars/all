@@ -10,6 +10,6 @@ zabbix                        : zabbix.ru-central1.internal
 kibana                        : kibana.ru-central1.internal
 elastic                       : elasticsearch.ru-central1.internal
 
-bastion                       : 158.160.152.1
-kibana_nat                    : 158.160.157.26
+bastion                       : 158.160.131.202
+kibana_nat                    : 158.160.144.110
 

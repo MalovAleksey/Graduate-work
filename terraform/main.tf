@@ -117,7 +117,7 @@ resource "yandex_compute_instance" "bastion-host" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
@@ -172,7 +172,7 @@ resource "yandex_compute_instance" "nginx-1" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
@@ -210,7 +210,7 @@ resource "yandex_compute_instance" "nginx-2" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
@@ -237,7 +237,7 @@ resource "yandex_compute_instance" "zabbix" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
-    nat       = var.nat
+    nat       = true
     security_group_ids = [yandex_vpc_security_group.zabbix.id]
   }
 
@@ -247,7 +247,7 @@ resource "yandex_compute_instance" "zabbix" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
@@ -284,7 +284,7 @@ resource "yandex_compute_instance" "Elasticsearch" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
@@ -311,7 +311,7 @@ resource "yandex_compute_instance" "Kibana" {
 
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-3.id}"
-    nat       = var.nat
+    nat       = true
     security_group_ids = [yandex_vpc_security_group.kibana.id]
   }
 
@@ -321,7 +321,7 @@ resource "yandex_compute_instance" "Kibana" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = var.preemptible
   }
 }
 
