@@ -21,4 +21,4 @@ terraform/variables.tf
 *wget-log
 *meta.yaml
 *default.tf
-*ansible/group_vars
+*ansible/group_vars*
